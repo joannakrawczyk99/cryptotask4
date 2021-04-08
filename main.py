@@ -47,8 +47,8 @@ def post_symmetric_encode():
 
 @app.get("/asymetric/key")
 def get_asymmetric_key():
-    return {"Klucz publiczny": asymmetric_public_key,
-            "Klucz prywatny": asymmetric_private_key}
+    return {"Public key": asymmetric_public_key,
+            "Private key": asymmetric_private_key}
 
 
 @app.post("/asymetric/sign")
