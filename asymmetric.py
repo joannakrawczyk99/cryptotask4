@@ -33,3 +33,10 @@ def decrypt_asymm_message(message, private_key):
         )
     )
     return decrypted_message
+
+def check_public_key(message, encrypted_message, public_key):
+    new_encrypted_message = encrypt_asymm_message(message, public_key)
+    if new_encrypted_message == encrypted_message:
+        return 'Message was encrypted with public key.'
+    else:
+        return 'Message was not encrypted with public key.'
