@@ -5,10 +5,8 @@ from keyModel import Key
 from messageModel import Message
 from symmetric import Symmetric
 
-asymemtric = Asymmetric()
+asymmetric = Asymmetric()
 symmetric = Symmetric()
-
-
 
 app = FastAPI()
 
@@ -70,10 +68,19 @@ def get_asymmetric_key():
     """
     :return: generated public and private asymmetric keys
     """
-    asymmetric_private_key = asymemtric.generate_asymm_private_key()
-    asymmetric_public_key = asymemtric.generate_asymm_public_key(asymmetric_private_key)
+    asymmetric_private_key = asymmetric.generate_asymm_private_key()
+    asymmetric_public_key = asymmetric.generate_asymm_public_key(asymmetric_private_key)
     return {"Public key": asymmetric_public_key,
             "Private key": asymmetric_private_key}
+
+
+@app.get("/asymetric/key/ssh ")
+def get_asymmetric_key_ssh():
+    """
+    :return: private and public keys in OpenSSH format
+    """
+    keys_ssh = asymmetric.generate_ssh_keys()
+    return keys_ssh
 
 
 @app.post("/asymetric/sign")
@@ -84,7 +91,7 @@ def post_asymmetric_sign(message: Message, key: Key, encrypted_message):
     :param encrypted_message: originally encrypted message
     :return: message about comparison
     """
-    sign_public_key = asymemtric.check_public_key(message.value, encrypted_message, key.public_key)
+    sign_public_key = asymmetric.check_public_key(message.value, encrypted_message, key.public_key)
     return sign_public_key
 
 
@@ -96,7 +103,7 @@ def post_asymmetric_encode(message: Message, key: Key):
     :param key: key object
     :return: encoded message
     """
-    asymm_encrypted_message = asymemtric.encrypt_asymm_message(message.value, key.public_key)
+    asymm_encrypted_message = asymmetric.encrypt_asymm_message(message.value, key.public_key)
     return {"Encoded message": f"{asymm_encrypted_message}"}
 
 
@@ -108,5 +115,5 @@ def post_asymmetric_decode(message: Message, key: Key):
     :param key: key object
     :return: decoded message
     """
-    asymm_decrypted_message = asymemtric.decrypt_asymm_message(message.value, key.private_key)
+    asymm_decrypted_message = asymmetric.decrypt_asymm_message(message.value, key.private_key)
     return {"Decoded message": f"{asymm_decrypted_message}"}

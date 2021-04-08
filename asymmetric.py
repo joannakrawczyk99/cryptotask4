@@ -29,6 +29,28 @@ class Asymmetric:
         public_key = private_key.public_key()
         return public_key
 
+
+    def generate_ssh_keys(self):
+        """
+        Generating keys in OpenSSH format.
+        :return: private and public keys in hex and OpenSSH format
+        """
+        key = rsa.generate_private_key(
+            public_exponent=65537,
+            key_size=2048
+        )
+        private_key_ssh = key.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.OpenSSH,
+            encryption_algorithm=serialization.NoEncryption()
+        ).hex()
+
+        public_key_ssh = key.public_key().public_bytes(
+            encoding=serialization.Encoding.OpenSSH,
+            format=serialization.PublicFormat.OpenSSH
+        ).hex()
+        return {private_key_ssh, public_key_ssh}
+
     def encrypt_asymm_message(self, message, public_key):
         """
         Encrypting message using asymmetric method and public key generated in generate_asymm_public_key().
