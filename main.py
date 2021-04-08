@@ -4,24 +4,23 @@ from asymmetric import generate_asymm_private_key, generate_asymm_public_key, en
     decrypt_asymm_message, check_public_key
 from symmetric import generate_fernet_key, encrypt_symm_message, decrypt_symm_message
 
-if __name__ == "__main__":
-    mess = b'encrypt me'
-    symmetric_key = generate_fernet_key()
-    symmetric_encrypted_message = encrypt_symm_message(symmetric_key, mess)
-    symmetric_decrypted_message = decrypt_symm_message(symmetric_key, symmetric_encrypted_message)
-    print(symmetric_key)
-    print(symmetric_encrypted_message)
-    print(symmetric_decrypted_message)
-    print()
-    asymmetric_private_key = generate_asymm_private_key()
-    asymmetric_public_key = generate_asymm_public_key(asymmetric_private_key)
-    asymm_encrypted_message = encrypt_asymm_message(mess, asymmetric_public_key)
-    asymm_decrypted_message = decrypt_asymm_message(asymm_encrypted_message, asymmetric_private_key)
-    sign_public_key = check_public_key(mess, asymm_encrypted_message, asymmetric_public_key)
-    print(asymmetric_private_key)
-    print(asymmetric_public_key)
-    print(asymm_encrypted_message)
-    print(asymm_decrypted_message)
+mess = b'encrypt me'
+symmetric_key = generate_fernet_key()
+symmetric_encrypted_message = encrypt_symm_message(symmetric_key, mess)
+symmetric_decrypted_message = decrypt_symm_message(symmetric_key, symmetric_encrypted_message)
+print(symmetric_key)
+print(symmetric_encrypted_message)
+print(symmetric_decrypted_message)
+print()
+asymmetric_private_key = generate_asymm_private_key()
+asymmetric_public_key = generate_asymm_public_key(asymmetric_private_key)
+asymm_encrypted_message = encrypt_asymm_message(mess, asymmetric_public_key)
+asymm_decrypted_message = decrypt_asymm_message(asymm_encrypted_message, asymmetric_private_key)
+sign_public_key = check_public_key(mess, asymm_encrypted_message, asymmetric_public_key)
+print(asymmetric_private_key)
+print(asymmetric_public_key)
+print(asymm_encrypted_message)
+print(asymm_decrypted_message)
 
 app = FastAPI()
 
@@ -63,7 +62,7 @@ def get_asymmetric_key():
 
 
 # POST asymetric/sign -> korzystając z aktualnie ustawionego klucza publicznego, weryfikuję czy wiadomość była zaszyfrowana przy jego użyciu
-@app.post("asymetric/sign")
+@app.post("/asymetric/sign")
 def post_asymmetric_sign():
     return sign_public_key
 
