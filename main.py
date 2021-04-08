@@ -22,6 +22,8 @@ print(asymmetric_public_key)
 print(asymm_encrypted_message)
 print(asymm_decrypted_message)
 
+
+
 app = FastAPI()
 
 
@@ -30,49 +32,34 @@ def say_hello():
     return {"Hello everyone!"}
 
 
-# GET symetric/key -> zwraca losowo wygenerowany klucz symetryczny w postaci HEXów (może być JSON)
 @app.get("/symetric/key")
 def get_symmetric_key():
     return symmetric_key
 
-
-# POST symetric/key -> ustawia na serwerze klucz symetryczny podany w postaci HEX w request
-
-# POST symetric/encode -> wysyłamy wiadomość, w wyniku dostajemy ją zaszyfrowaną
 @app.post("/symetric/encode")
 def post_symmetric_encode():
     return symmetric_encrypted_message
 
-
-# POST symetric/decode -> wysyłamy wiadomość, w wyniku dostajemy ją odszyfrowaną
 @app.post("/symetric/decode")
 def post_symmetric_encode():
     return symmetric_decrypted_message
 
 
-# GET asymetric/key -> zwraca nowy klucz publiczny i prywatny w postaci HEX (w JSON jako dict) i ustawia go na serwerze
 @app.get("/asymetric/key")
 def get_asymmetric_key():
     return {"Klucz publiczny": asymmetric_public_key,
             "Klucz prywatny": asymmetric_private_key}
 
-# GET asymetric/key/ssh -> zwraca klucz publiczny i prywatny w postaci HEX zapisany w formacie OpenSSH
-# POST asymetric/key -> ustawia na serwerze klucz publiczny i prywatny w postaci HEX (w JSON jako dict)
-# POST asymetric/verify -> korzystając z aktualnie ustawionego klucza prywatnego, podpisuje wiadomość i zwracaą ją podpisaną
 
-
-# POST asymetric/sign -> korzystając z aktualnie ustawionego klucza publicznego, weryfikuję czy wiadomość była zaszyfrowana przy jego użyciu
 @app.post("/asymetric/sign")
 def post_asymmetric_sign():
     return sign_public_key
 
-# POST asymetric/encode -> wysyłamy wiadomość, w wyniku dostajemy ją zaszyfrowaną
 @app.post("/asymetric/encode")
 def post_asymmetric_encode():
     return asymm_encrypted_message
 
 
-# POST asymetric/decode -> wysyłamy wiadomość, w wyniku dostajemy ją odszyfrowaną
 @app.post("/asymetric/decode")
 def post_asymmetric_decode():
     return asymm_decrypted_message
